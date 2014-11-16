@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="32" tileheight="32">
+ <properties>
+  <property name="Version" value="1.0"/>
+ </properties>
+ <tileset firstgid="1" source="dungeon.tsx"/>
+ <tileset firstgid="33" source="objects.tsx"/>
+ <tileset firstgid="65" source="characters.tsx"/>
+ <layer name="RoomTiles" width="20" height="20">
+  <data encoding="base64" compression="zlib">
+   eJxjYmBgYKIyZsSCkeWwqcOmjxTzsJmFTXwouA+fOyh1Hy515IbfUHAfOemXUHomB9PKPHL8REr+xZfGyfEvtc2jdnwMdv9Sah41MQDw3gIs
+  </data>
+ </layer>
+ <layer name="OverlayTiles" width="20" height="20">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2AUjIJRMApIBwAGQAAB
+  </data>
+ </layer>
+ <objectgroup name="Objects">
+  <object name="door" type="door" gid="33" x="352" y="512"/>
+  <object name="door" type="door" gid="34" x="160" y="512"/>
+  <object name="door" type="door" gid="34" x="64" y="192"/>
+  <object name="door" type="door" gid="34" x="544" y="320"/>
+  <object name="sloc" type="sloc" gid="35" x="224" y="352"/>
+ </objectgroup>
+</map>

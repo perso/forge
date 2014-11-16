@@ -1,0 +1,5 @@
+unused.py
+data/unused/*
+.idea
+__pycache__
+Thumbs.db
