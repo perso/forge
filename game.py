@@ -1,5 +1,4 @@
 import sys
-
 import configparser
 
 from pygame.locals import *
@@ -29,10 +28,8 @@ class Application(object):
         self._dungeon = Dungeon()
 
         # Initialize the Player and assign viewport.
-        start_x = 6
-        start_y = 5
         viewport_size = screen_to_world_coords((self._width, self._height))
-        viewport = Viewport((start_x, start_y), viewport_size)
+        viewport = Viewport(self._dungeon.sloc, viewport_size)
         self._player = Player(viewport)
 
     def start(self):

@@ -27,7 +27,7 @@ class Player(pygame.sprite.Sprite):
         bottom_right = (self.position[0] + 1, self.position[1] + 1)
         for y in range(top_left[1], bottom_right[1] + 1):
             for x in range(top_left[0], bottom_right[0] + 1):
-                if other.position[0] == x and other.position[1] == y:
+                if other.get_tile().position[0] == x and other.get_tile().position[1] == y:
                     return True
         return False
 

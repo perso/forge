@@ -1,6 +1,7 @@
 import os
-import pygame
 import math
+
+import pygame
 
 
 def world_to_screen_coords(world_coords):
@@ -21,24 +22,17 @@ def load_image(file_name, color_key=None, image_directory='data'):
     _image = pygame.image.load(file)
     if color_key:
         if color_key == -1:
-            #print("upper left")
             # If the color key is -1, set it to color of upper left corner
             color_key = _image.get_at((0, 0))
-        #print("convert")
-        #print(color_key)
-        #print(file_name)
-        #print(image_directory)
         _image.set_colorkey(color_key)
         _image = _image.convert()
     else:  # If there is no color key, preserve the image's alpha per pixel.
-        #print("preserve alpha")
         _image = _image.convert_alpha()
     return _image
 
 
 def get_image_by_gid(gid, tileset):
     local_id = gid - tileset["firstgid"]
-    #print(str(tileset["source"])+" "+str(tileset["firstgid"]))
     tm_image = load_image(tileset["source"], 0xff00ff, "data")
     tm_count_x = tileset["width"] / tileset["tilewidth"]
     tile_x = local_id % tm_count_x
@@ -59,7 +53,6 @@ def get_tileset_by_gid(gid, tilesets):
 
 
 def get_object_images(gid, tileset):
-    #print(tileset["properties"])
     object_id = tileset["properties"][gid]["objectid"]
     images = {}
     for p_gid, p_dict in tileset["properties"].items():

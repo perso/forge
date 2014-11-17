@@ -6,7 +6,6 @@ from game import Application
 
 
 def main(args):
-
     app = Application()
     try:
         app.start()
@@ -14,6 +13,7 @@ def main(args):
         return 1
     else:
         return 0
+
 
 if __name__ == "__main__":
     sys.exit(main(sys.argv))

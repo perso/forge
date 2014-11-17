@@ -10,6 +10,7 @@ class Dungeon(object):
         self.tilesize = 0
         self.tiles = []
         self.tilesets = {}
+        self.sloc = (0, 0)
 
         self._load_map()
 
@@ -63,12 +64,13 @@ class Dungeon(object):
             tile = self.get_tile_at(tile_x / self.tilesize,
                                     tile_y / self.tilesize - 1)
 
-            if tile is not None:
-                print(obj)
+            if obj["type"] == "sloc":
+                self.sloc = (int(int(obj["x"]) / self.tilesize), int(int(obj["y"]) / self.tilesize))
+            elif tile is not None:
                 if obj["type"] == "door":
-                    tile.add_entity(Door(tile_x, tile_y, self.tilesize, images, state))
+                    tile.add_entity(Door(tile, images, state))
                 else:
-                    tile.add_entity(Entity(tile_x, tile_y, self.tilesize, images, state))
+                    tile.add_entity(Entity(tile, images, state))
 
 
 class Tile(pygame.sprite.Sprite):
@@ -103,23 +105,22 @@ class Tile(pygame.sprite.Sprite):
 
     def onclick(self, originator):
         for entity in self.entities:
-            print(entity.get_classname())
-            if entity.get_classname() == "Door" and originator.in_proximity(self):
-                if entity.get_state() == "closed":
-                    entity.open()
-                else:
-                    entity.close()
+            entity.onclick(originator)
 
 
 class Entity(pygame.sprite.Sprite):
-    def __init__(self, x, y, tilesize, images, state):
+    def __init__(self, tile, images, state):
+        self.tile = tile
         self.state = state
         self.animations = images
         self.image = self.animations[state]
-        self.rect = pygame.Rect((x * tilesize, y * tilesize), (tilesize, tilesize))
+        self.rect = tile.rect.copy()
 
     def get_classname(self):
         return type(self).__name__
+
+    def get_tile(self):
+        return self.tile
 
     def is_passable(self):
         return True
@@ -135,10 +136,13 @@ class Entity(pygame.sprite.Sprite):
         self.rect.left = tilesize * x
         screen.blit(self.image, self.rect)
 
+    def onclick(self, originator):
+        pass
+
 
 class Door(Entity):
-    def __init__(self, x, y, tilesize, images, state):
-        super().__init__(x, y, tilesize, images, state)
+    def __init__(self, tile, images, state):
+        super().__init__(tile, images, state)
 
     def open(self):
         self.state = "open"
@@ -150,3 +154,11 @@ class Door(Entity):
 
     def is_passable(self):
         return self.state == "open"
+
+    def onclick(self, originator):
+        super().onclick(originator)
+        if originator.in_proximity(self):
+            if self.get_state() == "closed":
+                self.open()
+            else:
+                self.close()

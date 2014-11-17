@@ -6,7 +6,6 @@ import xml.etree.ElementTree as ElementTree
 
 
 class MapParser(object):
-
     def __init__(self, file_name, level_directory):
         self._level_directory = level_directory
         self._file = os.path.join(level_directory, file_name)
@@ -39,7 +38,6 @@ class MapParser(object):
         tileset_elements = self._tree.findall("tileset")
         tilesets = {}
         for element in tileset_elements:
-
             firstgid = element.attrib["firstgid"]
             source = element.attrib["source"]
 
@@ -68,7 +66,7 @@ class MapParser(object):
 
     def get_tile_ids(self, layer_name=None):
         if layer_name is not None:
-            pathexp = "layer[@name='"+layer_name+"']/data"
+            pathexp = "layer[@name='" + layer_name + "']/data"
         else:
             pathexp = ".//layer/data"
         data_elements = self._tree.findall(pathexp)
@@ -97,9 +95,9 @@ class MapParser(object):
             objects.append({
                 "name": obj.attrib["name"],
                 "type": obj.attrib["type"],
-                "gid":  obj.attrib["gid"],
-                "x":    obj.attrib["x"],
-                "y":    obj.attrib["y"],
+                "gid": obj.attrib["gid"],
+                "x": obj.attrib["x"],
+                "y": obj.attrib["y"],
                 "properties": properties
             })
         return objects
@@ -120,7 +118,7 @@ class MapParser(object):
 
     @staticmethod
     def get_object_properties(object_element):
-        #gid = object_element.attrib["gid"]
+        # gid = object_element.attrib["gid"]
         property_elements = object_element.findall("properties/property")
         properties = {}
         for p in property_elements:
@@ -130,4 +128,4 @@ class MapParser(object):
     @staticmethod
     def _chunks(data, size):
         for i in range(0, len(data), size):
-            yield data[i:i+size]
+            yield data[i:i + size]
