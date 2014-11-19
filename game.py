@@ -14,23 +14,32 @@ class Application(object):
         # Initialize ConfigParser and read settings.
         config = configparser.ConfigParser()
         config.read('config.ini')
+
         self._width = int(config['Window'].get('Width', 480))
         self._height = int(config['Window'].get('Height', 480))
+        self._quit = False
+        self._screen = None
+        self._font = None
 
         # Initialize Pygame.
-        pygame.init()
-        pygame.display.set_caption("Forge")
-        self._screen = pygame.display.set_mode((self._width, self._height))
-        self._font = pygame.font.SysFont("Courier New", 16)
+        self.init_pygame((self._width, self._height))
 
-        # Initialize the dungeon.
-        self._quit = False
+        # Initialize Dungeon.
         self._dungeon = Dungeon()
 
-        # Initialize the Player and assign viewport.
+        # Initialize Player.
+        self._player = self.init_player()
+
+    def init_pygame(self, window_size):
+        pygame.init()
+        pygame.display.set_caption("Forge")
+        self._screen = pygame.display.set_mode(window_size)
+        self._font = pygame.font.SysFont("Courier New", 16)
+
+    def init_player(self):
         viewport_size = screen_to_world_coords((self._width, self._height))
         viewport = Viewport(self._dungeon.sloc, viewport_size)
-        self._player = Player(viewport)
+        return Player(viewport)
 
     def start(self):
 
