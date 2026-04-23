@@ -8,8 +8,10 @@ A tile-based dungeon crawler written in Python/Pygame. Uses Tiled TMX maps for l
 python main.py
 ```
 
-**Dependencies:** Python 3, Pygame  
+**Dependencies:** Python 3, Pygame 2.6  
 **Config:** `config.ini` — window size (default 480×480)
+
+> **Pygame version:** Target pygame 2.6 APIs throughout. When encountering code that uses deprecated or removed pygame patterns (e.g. `pygame.font.SysFont` size quirks, old `pygame.mask` usage, legacy event patterns), replace them with the current pygame 2.6 equivalents rather than preserving the old style.
 
 ## Controls
 
