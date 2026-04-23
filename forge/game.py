@@ -3,9 +3,9 @@ import configparser
 
 from pygame.locals import *
 
-from dungeon import Dungeon
-from player import Player, Viewport
-from lib import *
+from forge.dungeon import Dungeon
+from forge.player import Player, Viewport
+from forge.lib import *
 
 
 class Application(object):

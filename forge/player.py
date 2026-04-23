@@ -1,4 +1,4 @@
-from lib import *
+from forge.lib import *
 
 
 class Player(pygame.sprite.Sprite):

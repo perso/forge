@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "forge"
+version = "0.1.0"
+description = "An Ultima-style roguelike game"
+authors = ["Tatu Paronen <tatu.paronen@gmail.com>"]
+license = "GPL-2.0-only"
+readme = "README.md"
+packages = [{include = "forge"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pygame = "^2.6"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.0"
+
+[tool.poetry.scripts]
+forge = "forge.main:main"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

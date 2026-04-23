@@ -2,7 +2,7 @@
 
 import sys
 
-from game import Application
+from forge.game import Application
 
 
 def main(args):

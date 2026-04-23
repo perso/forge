@@ -1,5 +1,5 @@
-from mapparser import MapParser
-from lib import *
+from forge.mapparser import MapParser
+from forge.lib import *
 
 
 class Dungeon(object):
