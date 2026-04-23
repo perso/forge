@@ -12,7 +12,7 @@ python = "^3.11"
 pygame = "^2.6"
 
 [tool.poetry.group.dev.dependencies]
-pytest = "^8.0"
+pytest = "^9.0"
 
 [tool.poetry.scripts]
 forge = "forge.main:main"
