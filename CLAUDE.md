@@ -107,14 +107,42 @@ an object layer with 4 doors and 1 spawn point.
 
 ## Good Starting Points for gameprogrammingpatterns.com
 
+Adopt these patterns only when the problem they solve is actually felt — not speculatively. Each one adds surface area; earn it first.
+
 - **Game Loop** (ch. 9) — already present; could add fixed timestep / variable rendering
 - **Update Method** (ch. 10) — stubs exist; add NPC AI, animations
-- **Component** (ch. 14) — `Entity` list on `Tile` is a hint; could grow into full component system
-- **State Machine** (ch. 7) — `Door` state string is manual; a `StateMachine` class would generalise it
-- **Observer** (ch. 4) — input → player movement is direct calls; decoupling via events/observers enables logging, achievements, replays
-- **Flyweight** (ch. 3) — tile images reloaded per GID; sharing a single surface per GID would be a clean flyweight application
 - **Dirty Flag** (ch. 11) — FOV recalculated every frame; recalculate only when player moves
-- **Spatial Partition** (ch. 20) — flat tile array is already a simple grid; useful if entities multiply
+- **Component** (ch. 14) — `Entity` list on `Tile` is a hint; grow into a full component system only if entity composition becomes complex
+- **State Machine** (ch. 7) — `Door` state string is manual; a `StateMachine` class earns its keep once there are 3+ states or shared transitions
+- **Observer** (ch. 4) — useful when the same event needs multiple independent reactions (logging, achievements, replay)
+- **Flyweight** (ch. 3) — tile images reloaded per GID; worth sharing if profiling shows memory or load-time pressure
+- **Spatial Partition** (ch. 20) — flat tile array is already a simple grid; useful only if entity count grows large enough to make linear scans measurable
+
+## Architectural Direction
+
+### KISS and evolutionary growth
+Keep it simple. Every abstraction, layer, and pattern adds code surface area — more surface area means more places for bugs. Introduce structure only when the problem it solves is actually present, not in anticipation of future needs.
+
+Architecture should evolve as the project grows: start with the simplest thing that works, refactor when real friction appears, and resist the urge to generalise from a single use case.
+
+### Separation of concerns
+The codebase should maintain clear boundaries between three layers, even as Pygame remains the current rendering backend:
+
+- **Game logic** — pure computation: movement rules, FOV, entity state transitions, collision. No Pygame imports.
+- **Display** — renders world state to screen. Reads game state; never mutates it.
+- **Controller** — translates input events into intent (commands/actions) and forwards them to game logic.
+
+New code should be placed in the layer it belongs to. Logic that bleeds across layers (e.g. input handling that also mutates entity state) should be flagged for refactoring.
+
+### Game objects as data
+Game object parameters (tile properties, entity stats, door behaviour, spawn locations) should be defined in data files, not hard-coded in Python. The existing TMX/TSX pipeline is the model to follow. When adding new object types or parameters, extend the data layer first and have the code read from it.
+
+## Code Conventions
+
+- **Functional style:** prefer pure functions with explicit inputs and outputs; relegate mutable state to IO boundaries (game loop, file I/O, Pygame surface writes)
+- **Flat code:** avoid nesting beyond ~2–3 levels — use early returns and guard clauses instead of nested conditionals
+- **Comments:** document intent and non-obvious constraints, never what the code does; a meaningful name beats a comment
+- **Changes:** keep each change small and focused so it is easy to review; prefer surgical edits to existing code over rewrites unless the scope demands otherwise
 
 ## Notes
 
@@ -122,3 +150,4 @@ an object layer with 4 doors and 1 spawn point.
 - `mapparser.py` is standalone and has no Pygame dependency — good target for unit tests.
 - The bare `except:` in `Application.start` swallows errors silently during development; worth narrowing.
 - `Direction` is a plain class with class-level tuples, not a Python `Enum`. Moving to `enum.Enum` would add iteration and membership checks.
+- **Known migration debt:** `Dungeon.draw()` and `Player.draw()` currently live on game-logic objects, violating the display-layer separation goal. Migrate display code to a dedicated renderer when touching those classes.
